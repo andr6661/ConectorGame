@@ -1,0 +1,80 @@
+.game-wrapper {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center; /* по горизонтали центрируем весь блок */
+  align-items: flex-start; /* верх блока */
+  padding: 20px;
+  box-sizing: border-box;
+  gap: 50px; /* расстояние между колонками */
+}
+
+.left-column, .right-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Левая колонка */
+.left-column {
+  flex: 0 0 auto;
+}
+
+/* Правая колонка */
+.right-column {
+  flex: 0 0 auto;
+}
+
+/* Кнопки внизу Connector */
+.buttons-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.check-btn, .reset-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.check-btn {
+  background-color: #4caf50;
+  color: white;
+
+  &:hover {
+    background-color: #45a049;
+  }
+}
+
+.reset-btn {
+  background-color: #f44336;
+  color: white;
+
+  &:hover {
+    background-color: #da190b;
+  }
+}
+
+.result-btn.hidden {
+  visibility: hidden;
+}
+
+.result-btn.correct {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+}
+
+.result-btn.wrong {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+}
