@@ -97,7 +97,7 @@ export default function Connector({ wires, solved, modalOpen }: ConnectorProps) 
                             ref={el => (pinsRef.current[i] = el)}
                             className="pin"
                             style={{
-                                left: 0 + i * 25 + "px",  // подгоняем по горизонтали
+                                left: 45 + i * 25 + "px",  // подгоняем по горизонтали
                                 top: "60px"                 // верх пина на этой высоте
                             }}
                         />

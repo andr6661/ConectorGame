@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./rebus.scss";
+import cardImage from "../../assets/wires/fonRebus.webp";
 
 interface RebusPanelProps {
     solved: boolean[];
@@ -9,17 +10,22 @@ interface RebusPanelProps {
 }
 
 const rebuses = [
-    { question: "Ребус 1", answer: "Ответ 1" },
-    { question: "Ребус 2", answer: "Ответ 2" },
-    { question: "Ребус 3", answer: "Ответ 3" },
-    { question: "Ребус 4", answer: "Ответ 4" },
-    { question: "Ребус 5", answer: "Ответ 1" },
-    { question: "Ребус 6", answer: "Ответ 2" },
-    { question: "Ребус 7", answer: "Ответ 3" },
-    { question: "Ребус 8", answer: "Ответ 4" },
+    { question: "Ребус 1", answer: "Ответ 1", pinNumber: 1, pinLabel: "оранжево-жёлтый" },
+    { question: "Ребус 2", answer: "Ответ 2", pinNumber: 2, pinLabel: "желтый" },
+    { question: "Ребус 3", answer: "Ответ 3", pinNumber: 3, pinLabel: "зелено-белый" },
+    { question: "Ребус 4", answer: "Ответ 4", pinNumber: 4, pinLabel: "синий" },
+    { question: "Ребус 5", answer: "Ответ 1", pinNumber: 5, pinLabel: "сине-белый" },
+    { question: "Ребус 6", answer: "Ответ 2", pinNumber: 6, pinLabel: "зеленый" },
+    { question: "Ребус 7", answer: "Ответ 3", pinNumber: 7, pinLabel: "коричнево-белый" },
+    { question: "Ребус 8", answer: "Ответ 4", pinNumber: 8, pinLabel: "коричневый" },
 ];
 
-const RebusPanel: React.FC<RebusPanelProps> = ({ solved, onSolve, modalOpen, setModalOpen }) => {
+const RebusPanel: React.FC<RebusPanelProps> = ({
+                                                   solved,
+                                                   onSolve,
+                                                   modalOpen,
+                                                   setModalOpen,
+                                               }) => {
     const [activeRebus, setActiveRebus] = useState<number | null>(null);
     const [inputValue, setInputValue] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
@@ -48,34 +54,33 @@ const RebusPanel: React.FC<RebusPanelProps> = ({ solved, onSolve, modalOpen, set
         }
     };
 
+    const renderRow = (indices: number[]) => (
+        <div className="rebus-row">
+            {indices.map(i => (
+                <div
+                    key={i}
+                    className="rebus-card"
+                    onClick={() => openRebus(i)}
+                    style={{
+                        backgroundImage: `url(${cardImage})`,
+                    }}
+                >
+                    {solved[i] && (
+                        <div className="pin-text">
+                            {`PIN ${rebuses[i].pinNumber} -> ${rebuses[i].pinLabel}`}
+                        </div>
+                    )}
+                </div>
+            ))}
+        </div>
+    );
+
     return (
         <div className="rebus-panel">
-            {/* Ряды ребусов */}
-            <div className="rebus-row">
-                {[0, 1, 2].map(i => (
-                    <div key={i} className="rebus-card" onClick={() => openRebus(i)}>
-                        {solved[i] ? rebuses[i].answer : "Нажми, чтобы решить"}
-                    </div>
-                ))}
-            </div>
+            {renderRow([0, 1, 2])}
+            {renderRow([3, 4, 5])}
+            <div className="rebus-row small">{renderRow([6, 7])}</div>
 
-            <div className="rebus-row">
-                {[3, 4, 5].map(i => (
-                    <div key={i} className="rebus-card" onClick={() => openRebus(i)}>
-                        {solved[i] ? rebuses[i].answer : "Нажми, чтобы решить"}
-                    </div>
-                ))}
-            </div>
-
-            <div className="rebus-row small">
-                {[6, 7].map(i => (
-                    <div key={i} className="rebus-card" onClick={() => openRebus(i)}>
-                        {solved[i] ? rebuses[i].answer : "Нажми, чтобы решить"}
-                    </div>
-                ))}
-            </div>
-
-            {/* Модалка */}
             {activeRebus !== null && modalOpen && (
                 <>
                     <div className="blur-background" onClick={closeModal}></div>
