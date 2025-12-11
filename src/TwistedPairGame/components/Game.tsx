@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { DndProvider } from "react-dnd";
+import { TouchBackend } from "react-dnd-touch-backend";
+
 import Connector from "./Connector";
 import RebusPanel from "./RebusPanel";
 import WireDragItem from "./WireDragItem";
+import CustomDragLayer from "./Custom"; // Импортируем компонент
 
 import blue from "../../assets/wires/blue.svg";
 import blueWhite from "../../assets/wires/blue-white.svg";
@@ -23,86 +27,75 @@ const WIRES = [
     { image: brown, color: "brown", targetPin: 7 },
 ];
 
-const Game: React.FC = () => {
+export default function Game() {
+    const [connections, setConnections] = useState<{ [wireIndex: number]: number }>({});
     const [solved, setSolved] = useState(Array(WIRES.length).fill(false));
-    const [modalOpen, setModalOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
 
-    // Провода
-    const [connections, setConnections] = useState<{ [wireIndex: number]: { x: number; y: number } }>({});
-    const [displayOrder, setDisplayOrder] = useState<number[]>([]);
-    const [result, setResult] = useState<null | boolean>(null);
-
-    useEffect(() => {
-        const order = WIRES.map((_, i) => i);
-        for (let i = order.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [order[i], order[j]] = [order[j], order[i]];
-        }
-        setDisplayOrder(order);
-    }, []);
-
-    const solve = (index: number) => {
-        setSolved(prev => {
-            const newArr = [...prev];
-            newArr[index] = true;
-            return newArr;
-        });
-    };
-
-    const handleDrag = (color: string, pos: { x: number; y: number }, wireIndex: number) => {
-        setConnections(prev => ({ ...prev, [wireIndex]: pos }));
+    const handleWireConnect = (wireIndex: number, pinIndex: number) => {
+        setConnections(prev => ({ ...prev, [wireIndex]: pinIndex }));
     };
 
     const checkConnections = () => {
-        // Здесь можно добавить проверку совпадений с targetPin
-        setResult(true);
+        const correct = WIRES.every((w, i) => connections[i] === w.targetPin);
+        alert(correct ? "Правильно!" : "Ошибка!");
+    };
+    const isWireConnected = (wireIndex: number) => {
+        return connections.hasOwnProperty(wireIndex);
     };
 
-    const resetWires = () => {
-        setConnections({});
-        setResult(null);
-    };
 
     return (
-        <div className="game-wrapper">
-            <div className="game-row">
-                {/* Коннектор */}
+        <DndProvider backend={TouchBackend} options={{
+            enableMouseEvents: true,
+            enableTouchEvents: true,
+            enableKeyboardEvents: false // если не нужна поддержка клавиатуры
+        }}>
+            {/* Добавляем Drag Layer - он будет рендериться поверх всего */}
+            <CustomDragLayer />
+
+            <div className="game-wrapper">
                 <div className="left-column">
-                    <Connector wires={WIRES} />
+                    <Connector
+                        wires={WIRES}
+                        connections={connections}
+                        onWireConnect={handleWireConnect}
+                    />
                 </div>
 
-                {/* Провода и кнопки */}
                 <div className="middle-column">
-                    <div className="wires-row">
-                        {displayOrder.map(i => (
+                    <div className="wires-list" style={{ display: "flex", flexDirection: "row" }}>
+                        {WIRES.map((wire, i) => (
                             <WireDragItem
                                 key={i}
-                                image={WIRES[i].image}
-                                color={WIRES[i].color}
-                                fixedPos={connections[i]}
-                                onDrag={(color, pos) => handleDrag(color, pos, i)}
-                                isPlaced={!!connections[i]}
-                                modalOpen={modalOpen}
+                                wireIndex={i}
+                                image={wire.image}
+                                color={wire.color}
+                                isConnected={isWireConnected(i)} // Вот это важно!
                             />
                         ))}
                     </div>
 
-                    <div className="buttons-row">
-                        <button onClick={checkConnections} className="check-btn">Проверить проводки</button>
-                        <button onClick={resetWires} className="reset-btn">Сбросить провода</button>
-                        <button className={`result-btn ${result === null ? "hidden" : result ? "correct" : "wrong"}`} disabled>
-                            {result === null ? "" : result ? "Правильно!" : "Неправильно!"}
-                        </button>
-                    </div>
+                    <button onClick={checkConnections} className="check-btn" style={{ marginTop: 20 }}>
+                        Проверить
+                    </button>
                 </div>
 
-                {/* Ребусы */}
                 <div className="right-column">
-                    <RebusPanel solved={solved} onSolve={solve} modalOpen={modalOpen} setModalOpen={setModalOpen} />
+                    <RebusPanel
+                        solved={solved}
+                        onSolve={(i) =>
+                            setSolved(prev => {
+                                const arr = [...prev];
+                                arr[i] = true;
+                                return arr;
+                            })
+                        }
+                        modalOpen={openModal}
+                        setModalOpen={setOpenModal}
+                    />
                 </div>
             </div>
-        </div>
+        </DndProvider>
     );
-};
-
-export default Game;
+}

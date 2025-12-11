@@ -1,110 +1,76 @@
 .game-wrapper {
   display: flex;
-  justify-content: center; /* центр по горизонтали */
-  align-items: center;     /* центр по вертикали */
+  gap: 50px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
-  padding: 20px;
   box-sizing: border-box;
 }
 
-.game-row {
-  display: flex;
-  gap: 40px; /* расстояние между колонками */
-  align-items: flex-start;
-}
-
-.left-column,
-.middle-column,
-.right-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Коннектор */
+/* SVG с пинами */
 .connector {
   position: relative;
   width: 276px;
   height: 521px;
+  background: #f0f0f0; /* можно убрать или оставить как фон */
+  border-radius: 12px;
 }
 
-.svg-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.pins-layer {
+.connector svg {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
+  z-index: 1;
 }
 
 .pin {
-  position: absolute;
   width: 12px;
   height: 56px;
-  background: #FFD000;
   border-radius: 6px;
+  position: absolute;
+  z-index: 5;
 }
 
-/* Провода */
-.wires-row {
+/* Провода справа */
+.wires-list {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 10px;
+  max-width: 600px;
 }
 
-/* Кнопки */
-.buttons-row {
-  display: flex;
-  gap: 10px;
+.wires-list img {
+  border-radius: 6px;
+  transition: transform 0.2s;
 }
 
-.check-btn,
-.reset-btn,
-.result-btn {
+.wires-list img:hover {
+  transform: scale(1.05);
+}
+
+/* Кнопка Проверить */
+.check-btn {
+  margin-top: 10px;
   padding: 10px 20px;
-  font-weight: bold;
   border-radius: 6px;
   border: none;
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s;
 }
 
-.check-btn {
-  background-color: #4caf50;
-  color: white;
-
-  &:hover {
-    background-color: #45a049;
-  }
+.check-btn:hover {
+  background-color: #45a049;
 }
 
-.reset-btn {
-  background-color: #f44336;
-  color: white;
-
-  &:hover {
-    background-color: #da190b;
-  }
-}
-
-.result-btn.hidden {
-  visibility: hidden;
-}
-
-.result-btn.correct {
-  background-color: #4caf50;
-  color: white;
-}
-
-.result-btn.wrong {
-  background-color: #f44336;
-  color: white;
+/* Ребусы справа */
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }

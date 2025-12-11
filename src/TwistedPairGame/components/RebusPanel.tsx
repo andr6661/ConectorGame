@@ -23,9 +23,9 @@ const rebuses = [
 const RebusPanel: React.FC<RebusPanelProps> = ({
                                                    solved,
                                                    onSolve,
-                                                   modalOpen,
-                                                   setModalOpen,
-                                               }) => {
+    modalOpen,
+    setModalOpen,
+}) => {
     const [activeRebus, setActiveRebus] = useState<number | null>(null);
     const [inputValue, setInputValue] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
