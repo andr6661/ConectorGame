@@ -1,27 +1,32 @@
-// WireDragItem остается почти без изменений
-export default function WireDragItem({ wireIndex, image, isConnected }: Props) {
+import React from "react";
+import { useDrag } from "react-dnd";
+import "./game.scss";
+
+interface Props {
+    wireIndex: number;
+    image: string;
+    isDisabled?: boolean;
+}
+
+export default function WireDragItem({ wireIndex, image, isDisabled }: Props) {
     const [{ isDragging }, dragRef] = useDrag(() => ({
         type: "WIRE",
-        item: { wireIndex, image },
-        canDrag: !isConnected,
+        item: { wireIndex },
+        canDrag: !isDisabled,
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
     }));
-
-    if (isConnected) return null; // ✅ Провод исчезает из списка
 
     return (
         <img
             ref={dragRef}
             src={image}
             alt="wire"
+            className="wire-item"
             style={{
-                width: 50,
-                height: 300,
-                opacity: isDragging ? 0.5 : 1,
-                cursor: "grab",
-                marginRight: 10,
+                opacity: isDisabled ? 0.3 : isDragging ? 0.5 : 1,
+                cursor: isDisabled ? "not-allowed" : "grab",
             }}
         />
     );

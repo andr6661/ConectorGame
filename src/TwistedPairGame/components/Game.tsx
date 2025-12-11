@@ -3,9 +3,8 @@ import { DndProvider } from "react-dnd";
 import { TouchBackend } from "react-dnd-touch-backend";
 
 import Connector from "./Connector";
-import RebusPanel from "./RebusPanel";
 import WireDragItem from "./WireDragItem";
-import CustomDragLayer from "./Custom"; // Импортируем компонент
+import RebusPanel from "./RebusPanel";
 
 import blue from "../../assets/wires/blue.svg";
 import blueWhite from "../../assets/wires/blue-white.svg";
@@ -28,32 +27,36 @@ const WIRES = [
 ];
 
 export default function Game() {
-    const [connections, setConnections] = useState<{ [wireIndex: number]: number }>({});
+    const [connections, setConnections] = useState<{ [pinIndex: number]: number }>({});
     const [solved, setSolved] = useState(Array(WIRES.length).fill(false));
-    const [openModal, setOpenModal] = useState(false);
 
     const handleWireConnect = (wireIndex: number, pinIndex: number) => {
-        setConnections(prev => ({ ...prev, [wireIndex]: pinIndex }));
+        setConnections(prev => {
+            // Удаляем провод с предыдущего пина, если он был где-то
+            const newConnections = Object.fromEntries(
+                Object.entries(prev).filter(([p, w]) => w !== wireIndex)
+            );
+            // Добавляем провод на новый пин
+            newConnections[pinIndex] = wireIndex;
+            return newConnections;
+        });
     };
 
     const checkConnections = () => {
         const correct = WIRES.every((w, i) => connections[i] === w.targetPin);
         alert(correct ? "Правильно!" : "Ошибка!");
     };
-    const isWireConnected = (wireIndex: number) => {
-        return connections.hasOwnProperty(wireIndex);
+
+    const handleSolve = (i: number) => {
+        setSolved(prev => {
+            const arr = [...prev];
+            arr[i] = true;
+            return arr;
+        });
     };
 
-
     return (
-        <DndProvider backend={TouchBackend} options={{
-            enableMouseEvents: true,
-            enableTouchEvents: true,
-            enableKeyboardEvents: false // если не нужна поддержка клавиатуры
-        }}>
-            {/* Добавляем Drag Layer - он будет рендериться поверх всего */}
-            <CustomDragLayer />
-
+        <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
             <div className="game-wrapper">
                 <div className="left-column">
                     <Connector
@@ -64,36 +67,27 @@ export default function Game() {
                 </div>
 
                 <div className="middle-column">
-                    <div className="wires-list" style={{ display: "flex", flexDirection: "row" }}>
-                        {WIRES.map((wire, i) => (
-                            <WireDragItem
-                                key={i}
-                                wireIndex={i}
-                                image={wire.image}
-                                color={wire.color}
-                                isConnected={isWireConnected(i)} // Вот это важно!
-                            />
-                        ))}
+                    <div className="wires-list">
+                        {WIRES.map((wire, i) => {
+                            const isUsed = Object.values(connections).includes(i);
+                            return (
+                                <WireDragItem
+                                    key={i}
+                                    wireIndex={i}
+                                    image={wire.image}
+                                    isDisabled={isUsed}
+                                />
+                            );
+                        })}
                     </div>
 
-                    <button onClick={checkConnections} className="check-btn" style={{ marginTop: 20 }}>
+                    <button className="check-btn" onClick={checkConnections}>
                         Проверить
                     </button>
                 </div>
 
                 <div className="right-column">
-                    <RebusPanel
-                        solved={solved}
-                        onSolve={(i) =>
-                            setSolved(prev => {
-                                const arr = [...prev];
-                                arr[i] = true;
-                                return arr;
-                            })
-                        }
-                        modalOpen={openModal}
-                        setModalOpen={setOpenModal}
-                    />
+                    <RebusPanel solved={solved} onSolve={handleSolve} />
                 </div>
             </div>
         </DndProvider>

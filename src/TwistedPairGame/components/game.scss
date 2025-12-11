@@ -1,21 +1,29 @@
+/* Общая обёртка игры */
 .game-wrapper {
   display: flex;
-  gap: 50px;
-  padding: 20px;
-  justify-content: center;
-  align-items: center;
+  justify-content: center; /* по горизонтали центр */
+  align-items: center;     /* по вертикали центр */
   width: 100vw;
   height: 100vh;
+  gap: 50px;
+  padding: 20px;
   box-sizing: border-box;
 }
 
-/* SVG с пинами */
+/* Колонки */
+.left-column, .middle-column, .right-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Connector */
 .connector {
-  position: relative;
+  position: relative;   /* важно для абсолютного позиционирования пинов */
   width: 276px;
   height: 521px;
-  background: #f0f0f0; /* можно убрать или оставить как фон */
   border-radius: 12px;
+  overflow: visible;
 }
 
 .connector svg {
@@ -25,12 +33,33 @@
   z-index: 1;
 }
 
+/* Пины */
 .pin {
+  position: absolute;
   width: 12px;
   height: 56px;
+  background: #FFD000;
   border-radius: 6px;
+  z-index: 10;
+  border: none;
+}
+
+/* Контейнер проводка внутри пина */
+.pin-wire-container {
   position: absolute;
+  top: 15px;           /* верх пина */
+  left: 50%;        /* центр по горизонтали */
+  transform: translateX(-50%); /* центрирование */
+  pointer-events: none;
+}
+
+.pin-wire {
+  display: block;
+  width: 50px;      /* ширина провода */
+  height: 300px;    /* высота провода */
+  margin-top: -12px; /* сдвигаем золотую часть внутрь пина */
   z-index: 5;
+  transition: top 0.2s, left 0.2s;
 }
 
 /* Провода справа */
@@ -38,22 +67,21 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 10px;
-  max-width: 600px;
+  gap: 15px;
+  max-width: 800px;
+  padding: 10px;
 }
 
-.wires-list img {
+.wires-list img,
+.wire-item {
+  width: 70px;
+  height: 400px;
   border-radius: 6px;
   transition: transform 0.2s;
 }
 
-.wires-list img:hover {
-  transform: scale(1.05);
-}
-
 /* Кнопка Проверить */
 .check-btn {
-  margin-top: 10px;
   padding: 10px 20px;
   border-radius: 6px;
   border: none;
@@ -61,16 +89,12 @@
   color: white;
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
-.check-btn:hover {
-  background-color: #45a049;
-}
-
-/* Ребусы справа */
+/* Правая колонка: RebusPanel */
 .right-column {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: center;
 }
