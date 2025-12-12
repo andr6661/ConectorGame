@@ -1,9 +1,10 @@
-import Connector from "./TwistedPairGame/components/Connector";
+import Connector from "././TwistedPairGame/components/Connector";
+import "./style.scss"; // Глобальные стили
 
 export default function App() {
     return (
-        <div>
-            <Connector title="Соединение проводов" =/>
+        <div className="app">
+            <Connector/>
         </div>
     );
 }

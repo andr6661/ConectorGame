@@ -1,34 +1,19 @@
+body{
+
+}
 .connector {
-  position: relative;
-  width: 276px; /* как у SVG */
-  margin: 0 auto;
-}
-
-/* SVG */
-.connector-svg {
-  position: relative;
-  display: block;
-  width: 276git remote -vpx;
-  height: auto;
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* Пины — строго поверх верхней рамки */
-.pins-row {
-  position: absolute;
-  top: 45px; /* идеальное попадание по твоей планке */
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between; /* РАВНОМЕРНО распределяет */
-  padding: 0 20px; /* отступы от краёв */
-  z-index: 3;
-  pointer-events: none; /* нельзя взаимодействовать, чтобы не мешали */
+  position: relative;  /* очень важно! */
+  width: 276px;
+  height: 521px;
+  border-radius: 12px;
+  overflow: visible;    /* если провода выступают за пределы */
 }
 
 .pin {
-  width: 13px;
+  position: absolute;   /* уже было */
+  width: 12px;
   height: 56px;
   background: #FFD000;
+  border-radius: 6px;
+  z-index: 10;
 }
