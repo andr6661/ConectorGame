@@ -1,0 +1,102 @@
+.image-slider {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .slider-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    position: relative;
+  }
+
+  .slide-wrapper {
+    width: 380px; // МОЖЕШЬ МЕНЯТЬ ШИРИНУ
+    height: 450px; // МОЖЕШЬ МЕНЯТЬ ВЫСОТУ
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    position: relative;
+  }
+
+  .slide {
+    width: 100%;
+    height: 100%;
+
+    .slide-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.02);
+      }
+    }
+  }
+
+  .nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    color: #4a5568;
+    width: 32px; // УМЕНЬШИЛ
+    height: 32px; // УМЕНЬШИЛ
+    border-radius: 50%;
+    font-size: 16px; // УМЕНЬШИЛ
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+
+    &:hover {
+      background: white;
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    &.prev-button {
+      left: -8px; // БЛИЖЕ К КАРТИНКЕ
+    }
+
+    &.next-button {
+      right: -8px; // БЛИЖЕ К КАРТИНКЕ
+    }
+  }
+
+  .indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+
+    .indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #cbd5e0;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #a0aec0;
+        transform: scale(1.2);
+      }
+
+      &.active {
+        background: #667eea;
+        transform: scale(1.2);
+      }
+    }
+  }
+}

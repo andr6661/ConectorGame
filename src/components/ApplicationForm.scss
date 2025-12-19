@@ -1,0 +1,131 @@
+.application-form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  .form-header {
+    margin-bottom: 20px;
+    flex-shrink: 0;
+
+    h2 {
+      font-size: 20px;
+      color: #2d3748;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .instructions {
+      color: #718096;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+  }
+
+  .form-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 20px;
+
+    &.two-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 25px;
+    }
+  }
+
+  .form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .form-field {
+    .field-label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #4a5568;
+      font-size: 15px;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      background: #f8fafc;
+      color: #2d3748;
+      font-family: inherit;
+
+      &:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      &::placeholder {
+        color: #a0aec0;
+      }
+
+      &.error {
+        border-color: #e53e3e;
+        background: #fff5f5;
+        animation: shake 0.5s ease;
+      }
+    }
+  }
+
+  .form-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: auto;
+    flex-shrink: 0;
+
+    .check-button {
+      flex: 2;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      color: white;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+      }
+    }
+
+    .reset-button {
+      flex: 1;
+      background: #e2e8f0;
+      color: #4a5568;
+      padding: 16px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #cbd5e0;
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+  20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
