@@ -41,13 +41,13 @@ const GamePage: React.FC<GamePageProps> = ({ onBack }) => {
         fio: 'ЮСУПОВ АЛЕКСАНДР ВАЛЕРЬЕВИЧ',
         snils: '241-379-422 89',
         citizenship: 'Российская Федерация',
-        address: 'УДМУРТСКАЯ РЕСПУБЛИКА Г.ВОТКИНСК УЛ.1МАЯ 26',
+        address: 'УДМУРТСКАЯ РЕСПУБЛИКА Г. ВОТКИНСК УЛ. 1МАЯ д. 26',
         experience: '43',
-        document: 'паспорт',
+        document: 'паспорт рф',
         series: '2200 997631',
         issueDate: '27.12.1976',
         birthDate: '12.12.1960',
-        birthPlace: 'Г.ГОРЬКИЙ',
+        birthPlace: 'Г. ГОРЬКИЙ',
     }
 
     const handleInputChange = (field: string, value: string) => {
